@@ -26,7 +26,8 @@ pipeline {
                     image 'node:18-alpine'
                     reuseNode true
                 }
-            } steps {
+            } 
+            steps {
                 sh '''
                 echo "Test stage"
                 test -f build/index.html
