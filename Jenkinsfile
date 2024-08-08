@@ -4,6 +4,7 @@ pipeline {
     environment {
         NETLIFY_SITE_ID = 'de23ecd5-21ad-46e7-930b-91805f6cee43'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
+        CI_ENVIRONMENT_URL = 'https://chipper-halva-7a38fd.netlify.app'
     }
     stages {
         // stage('Build') {
@@ -61,7 +62,7 @@ pipeline {
             }
         }
 
-            stage('Deploy') {
+        stage('Deploy') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -79,6 +80,23 @@ pipeline {
                 '''
             }
         }
+
+        stage('Prod E2E') {
+                agent {
+                    docker {
+                        image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                        reuseNode true
+                    }
+                }
+                environment {
+                    CI_ENVIRONMENT_URL = 'https://chipper-halva-7a38fd.netlify.app'
+                } 
+                steps {
+                    sh '''
+                    npx playwright test
+                    '''
+                }
+            }
 
     }
 
