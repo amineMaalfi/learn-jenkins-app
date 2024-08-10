@@ -70,9 +70,7 @@ pipeline {
                 }
             }
             steps {
-                sh '''
-                   input 'Do you wish to deploy to production?'
-                '''
+                input 'Do you wish to deploy to production?'
             }
         }
 
