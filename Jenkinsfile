@@ -62,6 +62,20 @@ pipeline {
             }
         }
 
+        stage('Approval') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                   input 'Do you wish to deploy to production?'
+                '''
+            }
+        }
+
         stage('Deploy prod') {
             agent {
                 docker {
